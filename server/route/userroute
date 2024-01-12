@@ -1,0 +1,33 @@
+import express from 'express'
+import authJwt from '../middleware/auth'
+import { SECRET } from '../config'
+import  jwt  from "jsonwebtoken"
+import User from '../modal/user'
+
+const router = express.Router
+
+
+
+
+router.post('/signup',async(req,res)=>{
+    const {username, password}= req.body
+    const user = await User.findOne({username})
+    if (user) {
+        res.status(403).json({message: 'user already exists'})
+    }
+    const newUser = new User({username, password, role:'user'})
+    await newUser.save()
+    const token = jwt.sign({username, role: 'user'}, SECRET, {expiresIn: '1h'})
+    res.json({message: 'user created successfully', token})
+})
+
+
+router.post('/login',async(req,res)=>{
+    const {username, password}= req.body
+    const user = await User.findOne({username, password})
+    if (user) {
+        const token = jwt.sign({user, role: 'user'},SECRET,{expiresIn: '1h'})
+        res.json({message:'logged in successfully', token})
+    }
+    res.status(403).json({message: ' Invalid username or password'})
+})  
