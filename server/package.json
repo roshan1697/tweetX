@@ -1,10 +1,11 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "server"
+    "server": "nodemon main.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.4"
+    "mongoose": "^8.0.4",
+    "nodemon": "^3.0.2"
   }
 }

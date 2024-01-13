@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import userRoute from './route  /userroute.js'
+import userRoute from './route/userroute.js'
 import{PORT, mongoURL} from './config.js'
 import mongoose from 'mongoose'
 
