@@ -25,7 +25,7 @@ const Post = () => {
 
   return (
     <div className="py-2.5 ">
-    <button id="hs-dropdown-basic" 
+    <button 
     type="button" onClick={()=>{setOpen(!open)}}
      className="relative inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-gray-700 align-middle transition-all bg-white border rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600">
       Actions
@@ -35,7 +35,7 @@ const Post = () => {
     <div className={open ? 'absolute duration translate-y-2.5  opacity-1 w-1/2 right-0  mt-2 min-w-[15rem] bg-white shadow-md rounded-lg p-2' 
     : 
      ' hidden'}  
-     id='dropdownlist'>
+     >
 <textarea onChange={(e)=>{
   setDescription(e.target.value)
 }} className="block w-full px-4 py-3 mt-2 text-sm border border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 " rows="3" placeholder="Description"></textarea>

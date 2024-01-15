@@ -7,7 +7,16 @@ import Post from '../modal/post.js'
 
 
 const router = express.Router()
+router.get('/me',authJwt ,async(req,res)=>{
+    const user = await User.findOne({email:req.user.email})
+        if(user){
+            res.json({
+                user:user.email
+            })
+        }
+        res.status(403).json({ message:'you are not login' })
 
+})
 
 
 

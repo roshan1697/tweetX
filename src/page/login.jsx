@@ -1,3 +1,4 @@
+import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -9,7 +10,14 @@ const Login = () => {
 
 
 
-  const handleClick = async() =>{}
+  const handleClick = async() =>{
+    const res = await axios.post('http://localhost:3000/user/login',{
+      email:email,
+      password:password
+    })
+    localStorage.setItem('token', res.data.token)
+    navigate('/')
+  }
   return (
     <div>
         <button 
