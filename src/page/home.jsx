@@ -4,6 +4,9 @@ import Post from '../components/post'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Login from './login'
+
+
+
 const Home = () => {
   const [userEmail, setUserEmail] = useState(null)
 
@@ -20,14 +23,13 @@ const Home = () => {
   }  
   
   useEffect(()=>{
-    
+  
     checkUser()
+  
 },[])
-    if(!userEmail){
-      return (
-        <Login/>
-      )
-    }
+if(!userEmail){
+  return <Login/>
+}
   return (
     <>
     <Navbar/>

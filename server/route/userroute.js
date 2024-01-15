@@ -13,8 +13,10 @@ router.get('/me',authJwt ,async(req,res)=>{
             res.json({
                 user:user.email
             })
+        }else{
+
+            res.status(403).json({ message:'you are not login' })
         }
-        res.status(403).json({ message:'you are not login' })
 
 })
 
@@ -39,8 +41,10 @@ router.post('/login',async(req,res)=>{
     if (user) {
         const token = jwt.sign({user, role: 'user'},SECRET,{expiresIn: '1h'})
         res.json({message:'logged in successfully', token})
+    }else{
+
+        res.status(403).json({message: ' Invalid username or password'})
     }
-    res.status(403).json({message: ' Invalid username or password'})
 })  
 
 router.post('/post',authJwt,async(req,res)=>{
@@ -50,6 +54,39 @@ router.post('/post',authJwt,async(req,res)=>{
 
 
 })
+router.get('/follow/:userId',authJwt, async (req, res) => {
+    const { followinguserId } = req.params
+    const followuserId = req.user._id
 
+    const user = await User.findById(followinguserId).populate('following', followuserId)
+    const user2 = await User.findById(followuserId).populate('followers',followinguserId)
+    if (!user || user2) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+
+    res.json({ followers: user.followers })
+
+    })
+
+router.post('/unfollow/:userId',authJwt, async (req, res) => {
+    const  userId  = req.user._id
+    const { unfollowUserId } = req.params
+    
+        const currentUser = await User.findById(userId)
+        const userToUnfollow = await User.findById(unfollowUserId)
+    
+        if (!currentUser || !userToUnfollow) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+    
+        currentUser.followers.pull(unfollowUserId)
+        await currentUser.save()
+    
+        userToUnfollow.following.pull(userId)
+        await userToUnfollow.save()
+    
+        res.json({ message: 'Unfollow successful' })
+    
+    })
 
 export default router

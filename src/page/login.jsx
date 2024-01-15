@@ -16,7 +16,8 @@ const Login = () => {
       password:password
     })
     localStorage.setItem('token', res.data.token)
-    navigate('/')
+    window.location.reload()
+
   }
   return (
     <div>
