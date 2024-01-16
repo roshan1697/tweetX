@@ -8,29 +8,49 @@ import Post from '../modal/post.js'
 
 const router = express.Router()
 router.get('/me',authJwt ,async(req,res)=>{
-    const user = await User.findOne({email:req.user.email})
+    
+    const user = await User.findById(req.user.id)
         if(user){
-            res.json({
-                user:user.email
+        return    res.json({
+                user:user.id
             })
-        }else{
-
-            res.status(403).json({ message:'you are not login' })
         }
 
+            res.status(403).json({ message:'you are not login' })
+        
+
+})
+router.get('/profile',authJwt,async(req,res)=>{
+    const user = await User.findById(req.user.id).populate('followers','name email followers following')
+    if(user){
+        return    res.json({
+                user
+            })
+        }
+
+            res.status(403).json({ message:'you are not login' })
 })
 
+router.get('/users',authJwt,async(req,res)=>{
+    const users = await User.find({})
+    if(users){
+        
+        return  res.json({ users })
+    }
+    res.status(403).json({ message:'no users' })
 
+})
 
 router.post('/signup',async(req,res)=>{
     const {name,email, password}= req.body
     const user = await User.findOne({email})
     if (user) {
-        res.status(403).json({message: 'user already exists'})
+        return  res.status(403).json({message: 'user already exists'})
     }
     const newUser = new User({name,email, password})
     await newUser.save()
-    const token = jwt.sign({email, role: 'user'}, SECRET, {expiresIn: '1h'})
+    const id = newUser._id
+    const token = jwt.sign({id, role: 'user'}, SECRET, {expiresIn: '1h'})
     res.json({message: 'user created successfully', token})
 })
 
@@ -39,7 +59,8 @@ router.post('/login',async(req,res)=>{
     const {email, password}= req.body
     const user = await User.findOne({email, password})
     if (user) {
-        const token = jwt.sign({user, role: 'user'},SECRET,{expiresIn: '1h'})
+        const id =user._id
+        const token = jwt.sign({id, role: 'user'},SECRET,{expiresIn: '1h'})
         res.json({message:'logged in successfully', token})
     }else{
 
@@ -55,16 +76,19 @@ router.post('/post',authJwt,async(req,res)=>{
 
 })
 router.get('/follow/:userId',authJwt, async (req, res) => {
-    const { followinguserId } = req.params
-    const followuserId = req.user._id
-
-    const user = await User.findById(followinguserId).populate('following', followuserId)
-    const user2 = await User.findById(followuserId).populate('followers',followinguserId)
-    if (!user || user2) {
+    const { userId } = req.params
+    const followuserId = req.user.id
+    
+    const user = await User.findById(userId)
+    const user2 = await User.findById(followuserId)
+    if (!user || !user2) {
         return res.status(404).json({ message: 'User not found' })
     }
-
-    res.json({ followers: user.followers })
+    user.following.push(followuserId)
+    await user.save()
+    user2.followers.push(userId)
+    await user2.save()
+    res.json({ message:'followed user' })
 
     })
 

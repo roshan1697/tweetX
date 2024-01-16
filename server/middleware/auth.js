@@ -9,7 +9,8 @@ const authJwt = (req,res,next) => {
             if(err) {
                 return res.sendStatus(403)
             }
-            req.user = user.user
+        
+            req.user = user
             next()
         })
     } else {
