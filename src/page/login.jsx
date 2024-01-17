@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import logo from '../assets/login.svg'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -16,28 +17,34 @@ const Login = () => {
       password:password
     })
     localStorage.setItem('token', res.data.token)
-    window.location.reload()
+    navigate('/')
 
   }
   return (
-    <div>
+    <div className="grid grid-cols-3 ">
+
+        <div className="grid pl-10 ">
+          <div className="grid mt-10">
+            
+          <spam className='text-3xl font-bold text-red-400 '>TweetX</spam>
         <button 
       onClick={()=>{
         navigate('/signup')
       }}
-      className="px-4 py-2 font-bold text-white bg-purple-500 rounded shadow hover:bg-purple-400 focus:shadow-outline focus:outline-none" 
+      className="w-56 h-10 px-8 py-2 text-gray-900 bg-white border-2 border-gray-400 rounded shadow focus:shadow-outline focus:outline-none" 
       type="button">
         Create Account
       </button>
-        <span>login</span>
+        </div>
       
     
-<div className="w-5/12">
+<div className="grid w-full">
+    <span className='text-3xl font-bold text-gray-500 '>Login</span>
   
-  <div className="mb-6 md:flex md:items-center">
+  <div className=" md:flex md:items-center">
     
-    <div className="md:w-2/3">
-      <input className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" 
+    <div className="w-4/5">
+      <input className="w-full h-12 px-4 py-2 leading-tight text-gray-400 bg-gray-100 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-red-400" 
       id="inline-full-name" 
       onChange={(e)=>{
         setEmail(e.target.value)
@@ -46,10 +53,10 @@ const Login = () => {
     </div>
     
   </div>
-  <div className="mb-6 md:flex md:items-center">
+  <div className=" md:flex md:items-center">
     
-    <div className="md:w-2/3"  >
-      <input className="w-full px-4 py-2 leading-tight text-gray-700 bg-gray-200 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-purple-500" 
+    <div className="w-4/5 "  >
+      <input className="w-full h-12 px-4 py-2 leading-tight text-gray-400 bg-gray-100 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-red-400" 
        onChange={(e)=>{
          setPassword(e.target.value)
         }}
@@ -61,19 +68,24 @@ className="px-2 py-1 font-mono text-sm text-gray-600 bg-gray-300 rounded cursor-
     
     
   </div>
-  <div className="md:flex md:items-center">
-    <div className="md:w-1/3">Forgot password?</div>
-    <div className="md:w-2/3">
+  <div className="flex items-center justify-between w-4/5 ">
+    <div className="cursor-pointer">Forgot password?</div>
+    <div className="">
       <button 
       onClick={handleClick}
-      className="px-4 py-2 font-bold text-white bg-purple-500 rounded shadow hover:bg-purple-400 focus:shadow-outline focus:outline-none" 
+      className="px-4 py-2 font-bold text-white bg-red-400 rounded shadow focus:shadow-outline focus:outline-none" 
       type="button">
-        Sign Up
+        Login
       </button>
     </div>
   </div>
 
     </div>
+        </div>
+        <div className=" md:mt-10 md:col-span-2 md:justify-center md:flex">
+          
+        <img src={logo}/>
+        </div>
         </div>
   )
 }

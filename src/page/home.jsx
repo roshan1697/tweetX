@@ -3,33 +3,11 @@ import Card from '../components/card'
 import Post from '../components/post'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import Login from './login'
 
 
 const Home = () => {
-  const [userEmail, setUserEmail] = useState(null)
+  
 
-  const checkUser = async() =>{
-    
-    const res = await axios.get('http://localhost:3000/user/me',{
-      headers:{
-        Authorization:'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    if(res.data.user){
-      setUserEmail(res.data.user)
-    }
-  }  
-  
-  useEffect(()=>{
-  
-    checkUser()
-  
-},[])
-if(!userEmail){
-  
-  return <Login/>
-}
   return (
     <>
     <Navbar/>
