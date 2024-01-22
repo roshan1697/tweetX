@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom"
 
 
 
-const Navbar = () => {
+const Navbar = ({props}) => {
   const navigate = useNavigate()
-  const [active,setActive] = useState('feed')
+  const [active,setActive] = useState(props)
+ 
     return (
         
 
@@ -18,24 +19,25 @@ const Navbar = () => {
         <li>
           <a href="#"
           onClick={()=>{
+          
             navigate('/')
-            setActive('feed')
           }}
           className={active === 'feed' ? 'block px-3 py-2 rounded md:bg-transparent md:p-0 text-red-400' :"block px-3 py-2 text-gray-400 rounded md:bg-transparent md:p-0 hover:text-red-400 "}>Feed</a>
         </li>
         <li>
           <a href="#" 
           onClick={()=>{
+            
+          
             navigate('/users')
-            setActive('user')
-          }}
+          }
+        }
           className={active === 'user' ? 'block px-3 py-2 rounded md:hover:bg-transparent md:p-0 text-red-400':"block px-3 py-2 text-gray-400 rounded md:hover:bg-transparent md:p-0 hover:text-red-400 "}>User</a>
         </li>
         <li>
           <a href="#" 
           onClick={()=>{
             navigate('/profile')
-            setActive('profile')
           }}
           className={active === 'profile' ? 'block px-3 py-2 rounded md:hover:bg-transparent md:p-0 text-red-400':"block px-3 py-2 text-gray-400 rounded md:hover:bg-transparent md:p-0 hover:text-red-400 "}>Profile</a>
         </li>

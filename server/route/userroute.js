@@ -1,6 +1,6 @@
 import express from 'express'
 import authJwt from '../middleware/auth.js'
-import { SECRET } from '../config.js'
+import { SECRET } from '../../config.js'
 import  jwt  from "jsonwebtoken"
 import User from '../modal/user.js'
 import Post from '../modal/post.js'
@@ -50,7 +50,7 @@ router.post('/signup',async(req,res)=>{
     const newUser = new User({name,email, password})
     await newUser.save()
     const id = newUser._id
-    const token = jwt.sign({id, role: 'user'}, SECRET, {expiresIn: '1h'})
+    const token = jwt.sign({id, role: 'user'}, SECRET, {expiresIn: '24h'})
     res.json({message: 'user created successfully', token})
 })
 
@@ -60,7 +60,7 @@ router.post('/login',async(req,res)=>{
     const user = await User.findOne({email, password})
     if (user) {
         const id =user._id
-        const token = jwt.sign({id, role: 'user'},SECRET,{expiresIn: '1h'})
+        const token = jwt.sign({id, role: 'user'},SECRET,{expiresIn: '24h'})
         res.json({message:'logged in successfully', token})
     }else{
 
@@ -71,9 +71,25 @@ router.post('/login',async(req,res)=>{
 router.post('/post',authJwt,async(req,res)=>{
     const post = new Post(req.body)
     await post.save()
+    const user = await User.findById(req.user.id)
+    user.userpost.push(post._id)
+    await user.save()
     res.json({ message: 'Post created successfully'})
 
 
+})
+
+router.get('/posts', authJwt,async(req,res)=>{
+    const user = await User.findById(req.user.id).populate('userpost')
+    if(user){
+        const allpost = user.userpost.map((post) => {
+            return { ...post.toObject(), name: user.name };
+        });
+        console.log(allpost)
+        return res.json({post:allpost})
+    }
+    res.status(404).json({ message: 'User not found' })
+    
 })
 router.get('/follow/:userId',authJwt, async (req, res) => {
     const { userId } = req.params

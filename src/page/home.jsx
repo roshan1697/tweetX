@@ -6,21 +6,32 @@ import axios from 'axios'
 
 
 const Home = () => {
+  const [post,setPost] = useState([])
+  const [loading,setloading] = useState(true)
   
-
+  useEffect(()=>{
+    axios.get('http://localhost:3000/user/posts',{
+      headers:{
+        Authorization:'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(res=>{
+      setPost(res.data.post)
+      setloading(false)
+      
+    })
+  },[])
   return (
     <>
-    <Navbar/>
-    <div className='w-3/5 m-auto border-2'>
-    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xl px-5 py-2.5 me-2 my-3 ml-3 w-28 focus:outline-none ">Write</button>
+    <Navbar props='feed'/>
+    <div className='w-2/5 m-auto border-2'>
+    <div className='my-5'>
+      
     <Post/>
-    <Card/>
-    <Card/>
-
-    <Card/>
-    <Card/>
-
-    <Card/>
+    </div>
+    
+    {post.map((value,index)=>{
+     return  <Card key={index} props={value}/>
+    })}
 
     </div>
 

@@ -4,17 +4,18 @@ import axios from "axios"
 
 
 const Profile = () => {
-  const [userprofile,setUserprofile] = useState([])
+  const [profile,setProfile] = useState([])
   const [loading,setLoading] = useState(true)
- const [tabs,setTabs] = useState('post')
+  const [tabs,setTabs] = useState('post')
   useEffect(()=>{
     axios.get('http://localhost:3000/user/profile',{
       headers:{
         Authorization:'Bearer ' + localStorage.getItem('token')
       }
     }).then(res=>{
-      setUserprofile(res.data.user)
-    }).then(setLoading(false))
+      setProfile(res.data.user)
+      setLoading(false)
+    })
   },[])
 
   if(loading){
@@ -36,9 +37,9 @@ const Profile = () => {
   
   return (
     <>
-    <Navbar/>
+    <Navbar props='profile'/>
     
-    <div className="w-2/4 pt-4 m-auto">
+    <div className="w-2/5 pt-4 m-auto">
     <div
   className="relative flex flex-col w-full text-gray-700 bg-transparent border-b-2 shadow-none rounded-xl bg-clip">
   <div
@@ -51,17 +52,17 @@ const Profile = () => {
       <div className="flex flex-col w-full ">
         <h5
           className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {userprofile.name}
+            {profile.name}
         </h5>
         <div className="flex justify-between mt-4 ">
         <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-        Posts:
+        Posts:{profile.userpost.length}
       </p>
       <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-      Followers:{userprofile.followers.length}
+      Followers:{profile.followers.length}
       </p>
       <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-        Following:{userprofile.following.length}
+        Following:{profile.following.length}
       </p>
         </div>
         
@@ -72,18 +73,6 @@ const Profile = () => {
   </div>
  
 </div>  
-
-
-
-
-
-
-
-
-
-
-
-
         
     <div className="text-sm font-medium text-center text-gray-500 border-t border-gray-200 ">
     <ul className="flex flex-wrap justify-between -mb-px">

@@ -38,9 +38,9 @@ const Users = () => {
     }
     return (
     <>
-    <Navbar/>
+    <Navbar props='user'/>
     
-    <div className="w-3/5 m-auto">
+    <div className="w-2/5 m-auto">
         {!userdata ? <h5>loading...</h5> : 
         userdata.map((value,index)=>{
             return <UserCard key={index} props={value}/>
