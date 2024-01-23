@@ -32,7 +32,7 @@ const Post = () => {
       
     </button>
   
-    <div className={open ? 'absolute duration translate-y-2.5 mt-2 ml-3  opacity-1 w-1/2    min-w-[15rem] bg-white shadow-md rounded-lg p-2' 
+    <div className={open ? 'absolute duration translate-y-2.5 mt-2 ml-3  opacity-1 w-1/2    min-w-[15rem] bg-white shadow-md rounded-lg p-2 z-50' 
     : 
      ' hidden'}  
      >

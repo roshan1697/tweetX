@@ -81,11 +81,25 @@ router.post('/post',authJwt,async(req,res)=>{
 
 router.get('/posts', authJwt,async(req,res)=>{
     const user = await User.findById(req.user.id).populate('userpost')
+    const followingpost = async(id)=>{
+        const user = await User.findById(id).populate('userpost')
+        if(user) {
+            const post = user.userpost.map((post)=>{
+                return { ...post.toObject(), name:user.name}
+            })
+            return post
+        }
+        return {}
+    }
+    const allfollowingpost = user.following.map((id)=>{
+        const post = followingpost(id)
+        return {}
+    })
     if(user){
         const allpost = user.userpost.map((post) => {
-            return { ...post.toObject(), name: user.name };
+            return { ...post.toObject(), name: user.name }
         });
-        console.log(allpost)
+       // console.log(allpost)
         return res.json({post:allpost})
     }
     res.status(404).json({ message: 'User not found' })
@@ -100,9 +114,9 @@ router.get('/follow/:userId',authJwt, async (req, res) => {
     if (!user || !user2) {
         return res.status(404).json({ message: 'User not found' })
     }
-    user.following.push(followuserId)
+    user.followers.push(followuserId)
     await user.save()
-    user2.followers.push(userId)
+    user2.following.push(userId)
     await user2.save()
     res.json({ message:'followed user' })
 

@@ -23,14 +23,14 @@ const Home = () => {
   return (
     <>
     <Navbar props='feed'/>
-    <div className='w-2/5 m-auto border-2'>
+    <div className='w-2/5 m-auto '>
     <div className='my-5'>
       
     <Post/>
     </div>
     
     {post.map((value,index)=>{
-     return  <Card key={index} props={value}/>
+      return  <Card key={index} props={value}/>
     })}
 
     </div>
