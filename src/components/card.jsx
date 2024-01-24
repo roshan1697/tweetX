@@ -1,5 +1,28 @@
 
 const Card = ({props}) => {
+    const timeStamp = (time) =>{
+        const now = new Date();
+        const date = new Date(time);
+        const timeDifference = now - date;
+      
+        const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
+
+  if (months > 0) {
+    return `${months} month${months > 1 ? 's' : ''} ago`;
+  } else if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else {
+    return 'just now';
+  }
+    }
     return (
     
     <div className="grid grid-cols-3 relative my-2  pl-4 leading-normal bg-white  border-gray-400 rounded-[2rem] shadow-xl items-center h-32 ">
@@ -11,7 +34,7 @@ const Card = ({props}) => {
             
         <div className="w-full ">
         <p className="text-2xl leading-none text-gray-900">{props.name}</p>
-        <p className="mr-3 text-sm text-right text-gray-400 ">Aug 18</p>
+        <p className="mr-3 text-sm text-right text-gray-400 ">{timeStamp(props.createdAt)}</p>
     </div>
     <div className="mb-8">
         <p className="text-base text-gray-500">{props.content}</p>

@@ -7,6 +7,13 @@ import Post from '../modal/post.js'
 
 
 const router = express.Router()
+
+const sort = (array) =>{
+    const sortedData= array.sort(( (a, b)=> { return new Date(b.createdAt) - new Date(a.createdAt) }))
+    return sortedData
+}
+
+
 router.get('/me',authJwt ,async(req,res)=>{
     
     const user = await User.findById(req.user.id)
@@ -91,16 +98,22 @@ router.get('/posts', authJwt,async(req,res)=>{
         }
         return {}
     }
-    const allfollowingpost = user.following.map((id)=>{
-        const post = followingpost(id)
-        return {}
-    })
+    const getAllFollowingPosts = async () => {
+        const allfollowingpost = await Promise.all(
+            user.following.map(async (id) => await followingpost(id))
+        )
+        return allfollowingpost
+    }
+    
     if(user){
+        const feed =  await   getAllFollowingPosts()
         const allpost = user.userpost.map((post) => {
             return { ...post.toObject(), name: user.name }
         });
        // console.log(allpost)
-        return res.json({post:allpost})
+        //console.log(feed)
+       // console.log(sort([...allpost, ...feed.flat()]))
+        return res.json({post:sort([...allpost, ...feed.flat()])})
     }
     res.status(404).json({ message: 'User not found' })
     
