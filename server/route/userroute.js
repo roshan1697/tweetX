@@ -12,6 +12,19 @@ const sort = (array) =>{
     const sortedData= array.sort(( (a, b)=> { return new Date(b.createdAt) - new Date(a.createdAt) }))
     return sortedData
 }
+const userFollowing = (array1,array2) => {
+    
+    const user = array1.map((a)=>{
+        const found = array2.find((index)=> index.toString() === a._id.toString())
+        
+        if(found){
+
+            return {...a.toObject(), userfollow:true}
+        }
+        return {...a.toObject(), userfollow:false}
+    })
+    return user
+}
 
 
 router.get('/me',authJwt ,async(req,res)=>{
@@ -28,10 +41,31 @@ router.get('/me',authJwt ,async(req,res)=>{
 
 })
 router.get('/profile',authJwt,async(req,res)=>{
-    const user = await User.findById(req.user.id).populate('followers','name email followers following')
+    const userFollow = (array1,array2) => {
+    
+        const user = array1.map((a)=>{
+            const found = array2.find((index)=> index._id.toString() === a._id.toString())
+            
+            if(found){
+    
+                return {...a.toObject(), userfollow:true}
+            }
+            return {...a.toObject(), userfollow:false}
+        })
+        return user
+    }
+    const user = await User.findById(req.user.id).populate('followers','name email followers following').populate('following','name email followers following').populate('userpost')
+    const post = user.userpost.map((post) => {
+        return { ...post.toObject(), name: user.name }
+    })
+    const followers = userFollow(user.followers,user.following)
+    const following = userFollow(user.following,user.following)
     if(user){
         return    res.json({
-                user
+                user,
+                post,
+                followers,
+                following
             })
         }
 
@@ -39,10 +73,11 @@ router.get('/profile',authJwt,async(req,res)=>{
 })
 
 router.get('/users',authJwt,async(req,res)=>{
-    const users = await User.find({})
+    const currentuser = await User.findById(req.user.id)
+    const users = await User.find({}).select("-email -password -followers -userpost")   
     if(users){
-        
-        return  res.json({ users })
+        users.splice(users.findIndex(a => a._id.toString() === req.user.id) , 1)
+        return  res.json({users: userFollowing(users,currentuser.following)} )
     }
     res.status(403).json({ message:'no users' })
 
@@ -109,10 +144,8 @@ router.get('/posts', authJwt,async(req,res)=>{
         const feed =  await   getAllFollowingPosts()
         const allpost = user.userpost.map((post) => {
             return { ...post.toObject(), name: user.name }
-        });
-       // console.log(allpost)
-        //console.log(feed)
-       // console.log(sort([...allpost, ...feed.flat()]))
+        })
+    
         return res.json({post:sort([...allpost, ...feed.flat()])})
     }
     res.status(404).json({ message: 'User not found' })
@@ -135,21 +168,21 @@ router.get('/follow/:userId',authJwt, async (req, res) => {
 
     })
 
-router.post('/unfollow/:userId',authJwt, async (req, res) => {
-    const  userId  = req.user._id
-    const { unfollowUserId } = req.params
+router.get('/unfollow/:userId',authJwt, async (req, res) => {
+    const  currentuserId  = req.user.id
+    const { userId } = req.params
     
-        const currentUser = await User.findById(userId)
-        const userToUnfollow = await User.findById(unfollowUserId)
+        const currentUser = await User.findById(currentuserId)
+        const userToUnfollow = await User.findById(userId)
     
         if (!currentUser || !userToUnfollow) {
             return res.status(404).json({ message: 'User not found' })
         }
     
-        currentUser.followers.pull(unfollowUserId)
+        currentUser.following.pull(userId)
         await currentUser.save()
     
-        userToUnfollow.following.pull(userId)
+        userToUnfollow.followers.pull(currentuserId)
         await userToUnfollow.save()
     
         res.json({ message: 'Unfollow successful' })

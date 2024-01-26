@@ -1,8 +1,16 @@
 import axios from "axios"
 
 const UserCard = ({props}) => {
-   const handleClick = async() =>{
+   const handlefollow = async() =>{
     await axios.get('http://localhost:3000/user/follow/' + props._id,{
+        headers:{
+            Authorization:'Bearer '  + localStorage.getItem('token')
+        }
+    })
+   }
+
+   const handleunfollow = async() =>{
+    await axios.get('http://localhost:3000/user/unfollow/' + props._id,{
         headers:{
             Authorization:'Bearer '  + localStorage.getItem('token')
         }
@@ -30,18 +38,21 @@ const UserCard = ({props}) => {
         
       </div>
       <div className="mr-1 ">
-        <button onClick={handleClick}
-        className="py-1 font-bold text-white bg-red-400 rounded shadow px-7 focus:shadow-outline focus:outline-none"
-        type="button"
-      >
-        follow
-      </button>
-      <button onClick={handleClick}
+        {props.userfollow?  <button onClick={handleunfollow}
         className="px-8 py-1 text-gray-900 bg-white border-2 border-gray-400 rounded-lg shadow md:my-6 sm:my-10 focus:shadow-outline focus:outline-none"
         type="button"
       >
         following
-      </button>
+      </button> :
+      <button onClick={handlefollow}
+      className="py-1 font-bold text-white bg-red-400 rounded shadow px-7 focus:shadow-outline focus:outline-none"
+      type="button"
+    >
+      follow
+    </button>
+      }
+        
+     
         </div>  
     
     </div>

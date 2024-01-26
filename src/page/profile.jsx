@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/navbar"
 import axios from "axios"
+import UserCard from "../components/usercard"
+import Card from '../components/card'
 
 
 const Profile = () => {
@@ -13,7 +15,7 @@ const Profile = () => {
         Authorization:'Bearer ' + localStorage.getItem('token')
       }
     }).then(res=>{
-      setProfile(res.data.user)
+      setProfile(res.data)
       setLoading(false)
     })
   },[])
@@ -52,17 +54,17 @@ const Profile = () => {
       <div className="flex flex-col w-full ">
         <h5
           className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {profile.name}
+            {profile.user.name}
         </h5>
         <div className="flex justify-between mt-4 ">
         <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-        Posts:{profile.userpost.length}
+        Posts:{profile.user.userpost.length}
       </p>
       <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-      Followers:{profile.followers.length}
+      Followers:{profile.user.followers.length}
       </p>
       <p className="block font-sans text-base font-light leading-relaxed mantialiased text-blue-gray-900">
-        Following:{profile.following.length}
+        Following:{profile.user.following.length}
       </p>
         </div>
         
@@ -115,11 +117,26 @@ const Profile = () => {
     </ul>
 </div>
 
-<div className={tabs === 'post'? '' : 'hidden'}>post</div>
+<div className={tabs === 'post'? '' : 'hidden'}>{profile.post.length === 0  ? <h5>no posts</h5> :
+profile.post.map((value,index)=>{
+      return  <Card key={index} props={value}/>
+    })}</div>
 
-<div className={tabs === 'followers'? '' : 'hidden'}>followers</div>
+<div className={tabs === 'followers'? '' : 'hidden'}>{profile.followers.length === 0  ? <h5>no followers</h5> : 
+        profile.followers.map((value,index)=>{
+            return <UserCard key={index} props={value}/>
+            
+            
+        })
+        }</div>
 
-<div className={tabs === 'following'? '' : 'hidden'}>following</div>
+<div className={tabs === 'following'? '' : 'hidden'}>{profile.following.length === 0 ? <h5>no followings</h5> : 
+        profile.following.map((value,index)=>{
+            return <UserCard key={index} props={value}/>
+            
+            
+        })
+        }</div>
 
 
 
