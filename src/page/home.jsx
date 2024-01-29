@@ -24,12 +24,12 @@ const Home = () => {
     <>
     <Navbar props='feed'/>
     <div className='w-2/5 m-auto '>
-    <div className='my-5'>
+    <div className='my-10'>
       
     <Post/>
     </div>
     
-    {post.map((value,index)=>{
+    {post.length === 0 ? <h5>no feed</h5> : post.map((value,index)=>{
       return  <Card key={index} props={value}/>
     })}
 

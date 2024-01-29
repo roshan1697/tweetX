@@ -41,19 +41,19 @@ const Profile = () => {
     <>
     <Navbar props='profile'/>
     
-    <div className="w-2/5 pt-4 m-auto">
+    <div className="w-2/5 pt-4 m-auto ">
     <div
-  className="relative flex flex-col w-full text-gray-700 bg-transparent border-b-2 shadow-none rounded-xl bg-clip">
+  className="relative flex flex-col w-full text-gray-700 bg-transparent border-b-2 shadow-none bg-clip">
   <div
     className="relative flex items-center gap-4 pt-0 pb-8 mx-0 mt-4 overflow-hidden text-gray-700 bg-transparent shadow-none bg-clip-border">
     <img
       src=""
-      alt="Tania Andrew"
-      className="relative inline-block h-[150px] w-[250px] !rounded-full border object-cover object-center" />
+      alt=""
+      className="relative inline-block h-[150px] w-[250px] !rounded-full border object-cover object-center border-black" />
     <div className="flex flex-row w-full ml-10 ">
       <div className="flex flex-col w-full ">
         <h5
-          className="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+          className="block font-sans text-3xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
             {profile.user.name}
         </h5>
         <div className="flex justify-between mt-4 ">
@@ -119,12 +119,12 @@ const Profile = () => {
 
 <div className={tabs === 'post'? '' : 'hidden'}>{profile.post.length === 0  ? <h5>no posts</h5> :
 profile.post.map((value,index)=>{
-      return  <Card key={index} props={value}/>
+      return  <Card key={index} props={value} border='true'/>
     })}</div>
 
 <div className={tabs === 'followers'? '' : 'hidden'}>{profile.followers.length === 0  ? <h5>no followers</h5> : 
         profile.followers.map((value,index)=>{
-            return <UserCard key={index} props={value}/>
+            return <UserCard key={index} props={value} border='true'/>
             
             
         })
@@ -132,7 +132,7 @@ profile.post.map((value,index)=>{
 
 <div className={tabs === 'following'? '' : 'hidden'}>{profile.following.length === 0 ? <h5>no followings</h5> : 
         profile.following.map((value,index)=>{
-            return <UserCard key={index} props={value}/>
+            return <UserCard key={index} props={value} border='true'/>
             
             
         })

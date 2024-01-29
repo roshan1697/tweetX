@@ -21,9 +21,9 @@ const Login = () => {
 
   }
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-1 ">
+    <div className="grid md:grid-cols-3 sm:grid-cols-1">
 
-        <div className="grid md:pl-10 sm:m-auto md:m-0 md:w-full sm:w-9/12 ">
+        <div className="grid md:pl-10 sm:m-auto md:m-0 md:w-full sm:w-9/12">
           <div className="grid mt-10">
             
           <spam className='text-3xl font-bold text-red-400 '>TweetX</spam>
@@ -44,7 +44,7 @@ const Login = () => {
   <div className="flex items-center">
     
     <div className="w-4/5 md:mb-2 sm:mb-10">
-      <input className="w-full h-12 px-4 py-2 leading-tight text-gray-400 bg-gray-100 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-red-400" 
+      <input className="w-full h-12 px-4 py-2 text-gray-400 bg-gray-100 rounded appearance-none focus:outline-none focus:bg-white focus:border-2 focus:border-red-400" 
       id="inline-full-name" 
       onChange={(e)=>{
         setEmail(e.target.value)
@@ -56,7 +56,7 @@ const Login = () => {
   <div className="flex items-center md:mb-4 sm:mb-10">
     
     <div className="relative w-4/5 "  >
-      <input className="w-full h-12 px-4 py-2 leading-tight text-gray-400 bg-gray-100 border-2 border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-red-400" 
+      <input className="w-full h-12 px-4 py-2 text-gray-400 bg-gray-100 rounded appearance-none focus:outline-none focus:border-2 focus:bg-white focus:border-red-400" 
       onChange={(e)=>{
         setPassword(e.target.value)
         }}
@@ -90,7 +90,7 @@ const Login = () => {
 
     </div>
         </div>
-        <div className="justify-center hidden col-span-2 mt-10 md:flex ">
+        <div className="justify-end hidden h-full col-span-2 mt-10 md:flex ">
           
         <img src={logo}/>
         </div>

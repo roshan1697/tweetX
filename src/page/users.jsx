@@ -41,7 +41,7 @@ const Users = () => {
     <Navbar props='user'/>
     
     <div className="w-2/5 m-auto">
-        {!userdata ? <h5>loading...</h5> : 
+        {userdata.length === 0 ? <h5>no user</h5> : 
         userdata.map((value,index)=>{
             return <UserCard key={index} props={value}/>
             

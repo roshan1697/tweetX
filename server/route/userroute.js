@@ -58,12 +58,13 @@ router.get('/profile',authJwt,async(req,res)=>{
     const post = user.userpost.map((post) => {
         return { ...post.toObject(), name: user.name }
     })
+   
     const followers = userFollow(user.followers,user.following)
     const following = userFollow(user.following,user.following)
     if(user){
         return    res.json({
                 user,
-                post,
+                post:sort(post),
                 followers,
                 following
             })
